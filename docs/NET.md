@@ -6,7 +6,7 @@ own squidkid locally (instant controls) and streams it to the others, who render
 as a local character, interpolated ~100 ms behind. Ink is replicated splat-for-splat from whoever painted it, so every
 screen shows the same turf.
 
-Transport: one WebSocket per player to a Cloudflare Durable Object relay (`server/`), one room object per code. The site and the relay are the same Worker, so the socket uses the page's own origin.
+Transport: one WebSocket per player to a Cloudflare Durable Object relay (`server/`), one room object per code. The site and the relay are the same Worker, so the published page opens the relative path `/room/…` (the browser supplies `wss:` or `ws:`). A local static page falls back to `ws://<host>:8787`; `?relay=` overrides it.
 
 ## `G.net` — the session (src/net/session.js)
 
