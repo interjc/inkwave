@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://inkwave-aah.pages.dev"><b>▶ Play now</b></a> ·
+  <a href="https://inkwave-net.inkwave.workers.dev"><b>▶ Play now</b></a> ·
   <a href="#controls">Controls</a> ·
   <a href="#playing-online">Online</a> ·
   <a href="#running-locally">Run locally</a> ·
@@ -66,19 +66,25 @@ From the main menu choose **Online**, then **Create a room** and send your frien
 type theirs). The host picks the stage, time of day, match length and whether bots fill empty slots; everyone else
 picks a team, weapon and look and readies up. The lineup, emotes and ready state are live for everyone in the room.
 
-Rooms run on a tiny relay (a Cloudflare Worker with one Durable Object per room, in [`server/`](server)). It only
-forwards messages: every player simulates their own squidkid and streams it, and everyone else draws it through the
-same animation system on a smoothed timeline about a tenth of a second behind. How that works, and the tools used to
-measure it, are in [`docs/NET.md`](docs/NET.md).
+Rooms run on the same Cloudflare Worker that serves the site ([`server/`](server), one Durable Object per room). The page opens its socket on its own address, so there is no separate relay host. The Worker only forwards messages: every player simulates their own squidkid and streams it, and everyone else draws it through the same animation system on a smoothed timeline about a tenth of a second behind. How that works, and the tools used to measure it, are in [`docs/NET.md`](docs/NET.md).
 
-To play online on your own network, run the relay next to the game:
+Publish the site and the rooms together (one Worker, static files in `public/`):
 
 ```bash
-npm install      # once: the relay runs on wrangler
-npm run relay    # ws://<this machine>:8787
+npm install
+npm run release     # build public/, then wrangler deploy
 ```
 
-A page opened from `localhost` or a LAN address uses that relay automatically; `?relay=wss://…` points it anywhere else.
+That serves the game at <https://inkwave-net.inkwave.workers.dev>. To play that shape on your own machine, `npm run dev` builds `public/` and serves the site and the rooms together at <http://localhost:8787>.
+
+While editing, the static server is faster (no rebuild). Run the relay beside it:
+
+```bash
+npm start           # http://localhost:8490
+npm run relay       # ws://<this machine>:8787
+```
+
+A page opened from `localhost` or a LAN address on any port other than 8787 uses that relay automatically. `?relay=wss://…` points it anywhere else.
 
 ## Running locally
 
@@ -96,7 +102,7 @@ Useful URL parameters: `?map=halyard&time=dusk` picks a stage, `&autostart=180` 
 npm install      # once, for the headless tools
 npm run check    # syntax-check every module
 npm run smoke    # boot + 8 s of autopilot in headless Chrome, fails on console errors
-npm run build    # assemble dist/ (game + only the three.js addons it imports)
+npm run build    # assemble public/ (the Worker's static files: game + only the three.js addons it imports)
 ```
 
 With the relay running, `npm run net-test` plays a real match between headless clients and reports what each
