@@ -4,7 +4,7 @@
   // Asset routes stay on the asset server. /room and /health always enter the Worker,
   // so a file can never shadow the relay.
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "inkwave-net",
+  "name": "inkwave",
   "main": "server/src/index.js",
   "compatibility_date": "2026-09-01",
   "assets": {

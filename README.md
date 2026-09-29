@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://inkwave-net.inkwave.workers.dev"><b>▶ Play now</b></a> ·
+  <a href="https://inkwave.inkwave.workers.dev"><b>▶ Play now</b></a> ·
   <a href="#controls">Controls</a> ·
   <a href="#playing-online">Online</a> ·
   <a href="#running-locally">Run locally</a> ·
@@ -75,7 +75,7 @@ npm install
 npm run release     # build public/, then wrangler deploy
 ```
 
-That serves the game at <https://inkwave-net.inkwave.workers.dev>. To play that shape on your own machine, `npm run dev` builds `public/` and serves the site and the rooms together at <http://localhost:8787>.
+That serves the game at <https://inkwave.inkwave.workers.dev>. To play that shape on your own machine, `npm run dev` builds `public/` and serves the site and the rooms together at <http://localhost:8787>.
 
 While editing, the static server is faster (no rebuild). Run the relay beside it:
 
